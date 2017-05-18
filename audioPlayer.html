@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head >
+		<meta charset = "utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			li {list-style-type: none; padding: 5px; }
+			a {text-decoration: none; color: black;}
+			#playlist .current-song a {
+				color: blue;
+			}
+            #wrapper {height:250px; width: 300px; border: 2px solid black; margin: 0 auto;}
+            .txtContainer{ width: 200px; margin:0 auto; }
+            .txtwrapper{
+                height: 100px; 
+                width:300px; 
+                margin: 0 auto;
+                border: 2px solid black;
+                position: relative;
+                top:0;
+                text-align:center;
+            }
+		</style>
+	</head>
+	<body>
+    <div id ="wrapper">
+		<audio src ="" controls id ="audioplaybox">
+		Your browser doesn't support html5 audio
+		</audio>
+		<ul id ="playlist">
+		<li class="current-song"><a href = "jmuir.mp3">Schoolboy Q: John MuIr</a></li>
+		<li><a href ="dmxwherethehoodat.mp3">DMX: Where Da Hood At</a></li>
+		<li><a href="sohigh.mp3">Wiz Khalifa: So High</a></li>
+		<li><a href= "braindamage.mp3">Eminem: Brain Damage</a></li>
+		</ul>
+    </div>
+    <div class= "txtwrapper">
+    <span class ="txtContainer"><h2>Now Playing:<br><br> Schoolboy Q: John Muir</h2></span>
+    </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script>
+		playaudio();
+		function playaudio() {
+        //binds audio src to list index number
+		var currentSong = 0;
+		$("#audioplaybox")[0].src = $("#playlist li a")[0];
+		$("#audioplaybox")[0].play(); //Turns on Autoplay
+        //changes the selected song color adds class current-song
+		$("#playlist li a").click(function(e) {
+            e.preventDefault();
+			$("#audioplaybox")[0].src = this;
+			$("#audioplaybox")[0].play(); 
+			$("#playlist li").removeClass("current-song");
+			currentSong = $(this).parent().index();
+			$(this).parent().addClass("current-song");
+            switch(currentSong) {
+                case 0:
+                 $(".txtContainer").html("<h2>Now Playing:<h2>" + " " + "Schoolboy Q: John MuIr");
+                break;
+                case 1:
+                $(".txtContainer").html("<h2>Now Playing:<h2>" + " " + "DMX: Where Da Hood At" ); 
+                break;
+                case 2:
+                 $(".txtContainer").html("<h2>Now Playing:<h2>" + " " + "Wiz Khalifa: So High" );
+                break;
+                case 3:
+                $(".txtContainer").html("<h2>Now Playing:<h2>" + " " + "Eminem: Brain Damage");
+                break;
+                default:
+                $(".txtContainer").html("<h2>Now Playing:<h2>" + " " + "Not Working");
+                break; 
+            }
+		});
+        //runs when user clicks next song, adds current-song class then adds list href to audio src
+		$("#audioplaybox")[0].addEventListener("ended", function() {
+			currentSong++;
+			if(currentSong == $("#playlist li a").length) {
+				currentSong = 0;
+				$("#playlist li a").removeClass("current-song");
+				$("#playlist li:eq("+currentSong+")").addClass("current-song");
+				$("#audioplaybox")[0].src = $("#playlist li a")[currentSong].href;
+				$("#audioplaybox")[0].play();
+			}
+		});
+        
+
+	}
+	</script>
+
+	</body>
+</html>
